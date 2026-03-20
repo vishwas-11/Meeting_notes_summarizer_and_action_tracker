@@ -1,9 +1,12 @@
 import axios from "axios";
 
-const API = axios.create({
-  baseURL: "http://localhost:8000",
-});
+// const API = axios.create({
+//   baseURL: "http://localhost:8000",
+// });
 
+const API = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+});
 
 
 // Create meeting
@@ -34,8 +37,15 @@ export const updateAction = (id, data) =>
   API.patch(`/actions/${id}`, data);
 
 
+// export const uploadMeeting = (formData) =>
+//   fetch("http://localhost:8000/meetings/upload", {
+//     method: "POST",
+//     body: formData,
+//   });
+
+
 export const uploadMeeting = (formData) =>
-  fetch("http://localhost:8000/meetings/upload", {
+  fetch(`${import.meta.env.VITE_API_URL}/meetings/upload`, {
     method: "POST",
     body: formData,
   });
