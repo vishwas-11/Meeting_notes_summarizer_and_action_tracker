@@ -9,3 +9,6 @@ class Settings:
     GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 settings = Settings()
+
+if not settings.MONGO_URI or not settings.DB_NAME:
+    raise Exception("Missing MongoDB configuration")

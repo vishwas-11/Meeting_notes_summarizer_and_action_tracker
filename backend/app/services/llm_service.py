@@ -4,23 +4,38 @@ from langchain_core.output_parsers import StrOutputParser
 from app.config.settings import settings
 from app.utils.prompt_template import prompt_template
 from app.utils.parser import parse_llm_output
+from dotenv import load_dotenv
 
-# Initialize Gemini via LangChain
+load_dotenv()
+
+
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.5-flash",
-    google_api_key=settings.GOOGLE_API_KEY,
-    temperature=0.3
+    temperature=0.4
 )
 
 parser = StrOutputParser()
 
-# Chain
 chain = prompt_template | llm | parser
 
 
 def process_notes(notes: str):
-    response = chain.invoke({"notes": notes})
+    try:
+        response = chain.invoke({"notes": notes})
 
-    parsed = parse_llm_output(response)
+        #  FORCE STRING (important)
+        if not isinstance(response, str):
+            response = str(response)
 
-    return parsed, response
+        parsed = parse_llm_output(response)
+
+        return parsed, response
+
+    except Exception as e:
+        print("LLM ERROR:", e)
+
+        return {
+            "summary": "",
+            "decisions": [],
+            "action_items": []
+        }, str(e)

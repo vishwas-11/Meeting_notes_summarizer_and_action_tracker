@@ -3,8 +3,9 @@ from langchain_core.prompts import PromptTemplate
 PROMPT = """
 You are an AI assistant that extracts structured information from meeting notes.
 
-Return ONLY valid JSON in this format:
+Return ONLY valid JSON. Do not include any explanation or text outside JSON.
 
+Format:
 {{
   "summary": "...",
   "decisions": ["..."],

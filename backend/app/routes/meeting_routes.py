@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+from bson import ObjectId
 
 from app.models.meeting import MeetingCreate
 from app.services.meeting_service import create_meeting, process_meeting
@@ -31,3 +32,14 @@ def get_all():
         m["_id"] = str(m["_id"])
 
     return meetings
+
+
+@router.get("/{meeting_id}")
+def get_one(meeting_id: str):
+    meeting = meetings_collection.find_one({"_id": ObjectId(meeting_id)})
+
+    if not meeting:
+        raise HTTPException(status_code=404, detail="Meeting not found")
+
+    meeting["_id"] = str(meeting["_id"])
+    return meeting

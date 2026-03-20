@@ -7,5 +7,13 @@ def parse_llm_output(text: str):
     except:
         match = re.search(r"\{.*\}", text, re.DOTALL)
         if match:
-            return json.loads(match.group())
-    return {}
+            try:
+                return json.loads(match.group())
+            except:
+                pass
+
+    return {
+        "summary": "",
+        "decisions": [],
+        "action_items": []
+    }

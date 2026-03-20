@@ -8,8 +8,15 @@ router = APIRouter()
 
 
 @router.get("/")
-def get_actions():
-    actions = list(actions_collection.find())
+def get_actions(owner: str = "", status: str = ""):
+    query = {}
+
+    if owner:
+        query["owner"] = owner
+    if status:
+        query["status"] = status
+
+    actions = list(actions_collection.find(query))
 
     for a in actions:
         a["_id"] = str(a["_id"])

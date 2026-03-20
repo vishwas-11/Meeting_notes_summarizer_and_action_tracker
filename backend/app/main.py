@@ -19,4 +19,4 @@ app.include_router(action_routes.router, prefix="/actions")
 
 @app.get("/")
 def root():
-    return {"message": "LangChain Meeting AI API "}
+    return {"message": "AI Meeting Notes API Running"}
