@@ -16,7 +16,7 @@ export default function History() {
 
   return (
     <div className="p-6">
-      {/* 🔍 SEARCH */}
+     
       <input
         placeholder="Search meetings..."
         className="border p-2 w-full mb-4"
@@ -24,7 +24,7 @@ export default function History() {
       />
 
       {filtered.map((m) => {
-        // 🔥 FINAL SOURCE LOGIC (robust fallback)
+        
         const source =
           m.source ||
           (m.type === "Uploaded" || m.type === "File Upload"
@@ -38,7 +38,7 @@ export default function History() {
               {/* TITLE */}
               <h2 className="font-semibold text-lg">{m.title}</h2>
 
-              {/* 🔥 ICON + SOURCE BADGE */}
+              
               <div className="mt-1 flex items-center gap-2">
                 <span className="text-sm">
                   {source === "Uploaded" ? "📄" : "✍️"}
@@ -62,12 +62,12 @@ export default function History() {
                 )}
               </div>
 
-              {/* 🧠 SUMMARY */}
+              
               <p className="text-sm text-gray-600 mt-2">
                 {m.summary || "No summary available"}
               </p>
 
-              {/* 🕒 CREATED AT (formatted for India) */}
+              
               {m.created_at && (
                 <p className="text-xs text-gray-400 mt-2">
                   {new Date(m.created_at).toLocaleString("en-IN", {
