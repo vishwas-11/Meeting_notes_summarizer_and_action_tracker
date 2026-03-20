@@ -10,57 +10,130 @@ export default function CreateMeeting() {
     notes: "",
   });
 
+  const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
+  //  Manual flow
   const handleSubmit = async () => {
-    const payload = {
-      ...form,
-      participants: form.participants.split(","),
-    };
+    try {
+      setLoading(true);
 
-    const res = await createMeeting(payload);
-    const id = res.data.meeting_id;
+      const payload = {
+        ...form,
+        participants: form.participants.split(","),
+      };
 
-    await processMeeting(id);
+      const res = await createMeeting(payload);
+      const id = res.data.meeting_id;
 
-    navigate(`/meeting/${id}`);
+      await processMeeting(id);
+
+      navigate(`/meeting/${id}`);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  //  Upload flow
+  const handleUpload = async () => {
+    if (!file) return alert("Please select a file");
+
+    try {
+      setLoading(true);
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch(
+        "http://localhost:8000/meetings/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data = await res.json();
+      const id = data.meeting_id;
+
+      //  IMPORTANT: still run LLM processing
+      await processMeeting(id);
+
+      navigate(`/meeting/${id}`);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="p-6 space-y-4">
-      <input
-        placeholder="Title"
-        className="border p-2 w-full"
-        onChange={(e) => setForm({ ...form, title: e.target.value })}
-      />
+    <div className="p-6 space-y-6">
 
-      <input
-        placeholder="Type"
-        className="border p-2 w-full"
-        onChange={(e) => setForm({ ...form, type: e.target.value })}
-      />
+      <h1 className="text-2xl font-bold">Create Meeting</h1>
 
-      <input
-        placeholder="Participants (comma separated)"
-        className="border p-2 w-full"
-        onChange={(e) =>
-          setForm({ ...form, participants: e.target.value })
-        }
-      />
+      {/* ================= MANUAL FORM ================= */}
+      <div className="border p-4 rounded">
+        <h2 className="font-semibold mb-2">Manual Entry</h2>
 
-      <textarea
-        placeholder="Meeting Notes"
-        className="border p-2 w-full"
-        rows={6}
-        onChange={(e) => setForm({ ...form, notes: e.target.value })}
-      />
+        <input
+          placeholder="Title"
+          className="border p-2 w-full mb-2"
+          onChange={(e) => setForm({ ...form, title: e.target.value })}
+        />
 
-      <button
-        onClick={handleSubmit}
-        className="bg-blue-500 text-white px-4 py-2"
-      >
-        Generate Insights
-      </button>
+        <input
+          placeholder="Type"
+          className="border p-2 w-full mb-2"
+          onChange={(e) => setForm({ ...form, type: e.target.value })}
+        />
+
+        <input
+          placeholder="Participants (comma separated)"
+          className="border p-2 w-full mb-2"
+          onChange={(e) =>
+            setForm({ ...form, participants: e.target.value })
+          }
+        />
+
+        <textarea
+          placeholder="Meeting Notes"
+          className="border p-2 w-full mb-2"
+          rows={6}
+          onChange={(e) => setForm({ ...form, notes: e.target.value })}
+        />
+
+        <button
+          onClick={handleSubmit}
+          className="bg-blue-500 text-white px-4 py-2"
+        >
+          Generate from Notes
+        </button>
+      </div>
+
+      {/* ================= FILE UPLOAD ================= */}
+      <div className="border p-4 rounded">
+        <h2 className="font-semibold mb-2">Upload Minutes File</h2>
+
+        <input
+          type="file"
+          accept=".txt"
+          onChange={(e) => setFile(e.target.files[0])}
+          className="mb-2"
+        />
+
+        <button
+          onClick={handleUpload}
+          className="bg-purple-500 text-white px-4 py-2"
+        >
+          Upload & Generate
+        </button>
+      </div>
+
+      {loading && <p className="text-gray-500">Processing...</p>}
     </div>
   );
 }

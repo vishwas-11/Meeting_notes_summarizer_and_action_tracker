@@ -1,24 +1,3 @@
-// import axios from "axios";
-
-// const API = axios.create({
-//   baseURL: "http://localhost:8000",
-// });
-
-// // Meetings
-// export const createMeeting = (data) => API.post("/meetings/create", data);
-// export const processMeeting = (id) => API.post(`/meetings/process/${id}`);
-// export const getMeetings = () => API.get("/meetings");
-// export const getMeeting = (id) => API.get(`/meetings/${id}`);
-
-// // Actions
-// export const getActions = (params) => API.get("/actions", { params });
-// export const updateAction = (id, data) =>
-//   API.patch(`/actions/${id}`, data);
-
-// export default API;
-
-
-
 import axios from "axios";
 
 const API = axios.create({
@@ -55,6 +34,10 @@ export const updateAction = (id, data) =>
   API.patch(`/actions/${id}`, data);
 
 
-
+export const uploadMeeting = (formData) =>
+  fetch("http://localhost:8000/meetings/upload", {
+    method: "POST",
+    body: formData,
+  });
 
 export default API;

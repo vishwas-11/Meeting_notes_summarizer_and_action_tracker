@@ -19,7 +19,7 @@ export default function ActionsDashboard() {
     fetchActions();
   }, []);
 
-  // 🔍 Combined filtering (frontend)
+  //  Combined filtering (frontend)
   const filtered = actions.filter((a) => {
     return (
       a.task.toLowerCase().includes(filters.search.toLowerCase()) &&
@@ -30,7 +30,7 @@ export default function ActionsDashboard() {
     );
   });
 
-  // ✅ 📊 Progress Stats
+  // Progress Stats
   const total = filtered.length;
   const done = filtered.filter((a) => a.status === "Done").length;
   const percentage = total === 0 ? 0 : (done / total) * 100;
@@ -70,7 +70,7 @@ export default function ActionsDashboard() {
         </select>
       </div>
 
-      {/* ✅ PROGRESS INDICATOR (ADD HERE) */}
+      {/*  PROGRESS INDICATOR (ADD HERE) */}
       <div className="mb-4">
         <p>Total: {total}</p>
         <p>Completed: {done}</p>
