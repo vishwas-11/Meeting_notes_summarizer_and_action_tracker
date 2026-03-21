@@ -153,7 +153,7 @@
 
 
 import { useState } from "react";
-import { createMeeting, processMeeting } from "../api/api";
+import { createMeeting, processMeeting, uploadMeeting } from "../api/api";
 import { useNavigate } from "react-router-dom";
 import { Upload, FileText, Loader2 } from "lucide-react"; // Optional: for soft icons
 
@@ -194,16 +194,8 @@ export default function CreateMeeting() {
             const formData = new FormData();
             formData.append("file", file);
 
-            const res = await fetch(
-                `${import.meta.env.VITE_API_URL}/meetings/upload`,
-                {
-                    method: "POST",
-                    body: formData,
-                }
-            );
-
-            const data = await res.json();
-            const id = data.meeting_id;
+            const res = await uploadMeeting(formData);
+            const id = res.data.meeting_id;
             await processMeeting(id);
             navigate(`/meeting/${id}`);
         } catch (err) {

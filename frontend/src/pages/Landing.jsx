@@ -73,7 +73,7 @@ const Landing = () => {
 
       {/* Single Primary Action */}
       <Link 
-        to="/summarize" 
+        to="/login" 
         className="px-12 py-4 bg-[#6B705C] text-white text-lg font-medium rounded-xl shadow-xl shadow-[#6B705C]/20 hover:bg-[#5B604C] transition-all duration-300 transform hover:-translate-y-1"
       >
         Get Started
