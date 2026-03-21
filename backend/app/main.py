@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routes import meeting_routes, action_routes
+from app.routes import meeting_routes, action_routes, auth_routes
 
 app = FastAPI()
 
@@ -15,6 +15,7 @@ app.add_middleware(
 
 app.include_router(meeting_routes.router, prefix="/meetings")
 app.include_router(action_routes.router, prefix="/actions")
+app.include_router(auth_routes.router, prefix="/auth")
 
 
 @app.get("/")
