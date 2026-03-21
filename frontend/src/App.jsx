@@ -36,10 +36,7 @@ import Navbar from "./components/Navbar";
 function App() {
   return (
     <BrowserRouter>
-      {/* Pro Tip: Use a "Layout" component if you only want the 
-         Navbar to show up once the user enters the app, 
-         keeping the landing page clean and immersive.
-      */}
+      
       <Navbar /> 
       
       <Routes>
